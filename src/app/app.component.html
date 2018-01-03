@@ -21,14 +21,8 @@
     <div fxFlex
          fxLayout="column"
          fxLayoutAlign="center center">
-      <canvas class="content-main-image"></canvas>
-
-      <!--<img class="content-main-image"
-           [src]="changedImage"
-           *ngIf="changedImage">
-      <img class="content-main-image"
-           [src]="baseImage"
-           *ngIf="baseImage && !changedImage">-->
+      <canvas #myCanvas
+              class="content-main-image"></canvas>
     </div>
     <mat-toolbar color="primary"
                  fxLayout="row"
@@ -46,7 +40,8 @@
       <mat-progress-bar mode="indeterminate"
                         *ngIf="isLoading"></mat-progress-bar>
 
-      <mat-slide-toggle [disabled]="!baseImage"
+      <mat-slide-toggle [(ngModel)]="dislocated"
+                        [disabled]="isLoading"
                         (change)="onDislocateChange($event)">
         Dislocate!
       </mat-slide-toggle>

@@ -1,4 +1,5 @@
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatProgressBarModule, MatSlideToggleModule, MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +14,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    FormsModule,
 
     /* Angular Material */
     MatToolbarModule,
