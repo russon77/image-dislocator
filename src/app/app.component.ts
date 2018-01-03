@@ -118,38 +118,91 @@ export class AppComponent implements AfterViewInit, OnInit {
 
       const thrd = thread.spawn(
         function (imageData, done) {
+          // major thanks to https://www.alanzucconi.com/2015/09/30/colour-sorting/
+          // for inspiration and code!
+          function sorter(a: IColor, b: IColor): number {
+            const hsvA: [number, number, number] = rgb2step(a[0], a[1], a[2]);
+            const hsvB: [number, number, number] = rgb2step(b[0], b[1], b[2]);
+
+            const aIsGreater = -1;
+            const bIsGreater = 1;
+
+            if (hsvA[0] > hsvB[0]) {
+              return aIsGreater;
+            } else if (hsvA[0] < hsvB[0]) {
+              return bIsGreater;
+            } else {
+              if (hsvA[1] > hsvB[1]) {
+                return aIsGreater;
+              } else if (hsvA[1] < hsvA[1]) {
+                return bIsGreater;
+              } else {
+                if (hsvA[2] > hsvB[2]) {
+                  return aIsGreater;
+                } else if (hsvA[2] < hsvB[2]) {
+                  return bIsGreater;
+                }
+              }
+            }
+
+            return 0;
+          }
+
+          function rgb2step(r, g, b, repetitions = 8): [number, number, number] {
+            const lum = Math.sqrt(.241 * r + .691 * g + .068 * b);
+            const [h, s, v] = rgb2hsv(r, g, b);
+
+            const h2 = Math.floor(h * repetitions);
+            const lum2 = Math.floor(lum * repetitions);
+            const v2 = Math.floor(v * repetitions);
+
+            return [h2, lum2, v2];
+          }
+
+          // thanks to http://www.javascripter.net/faq/rgb2hsv.htm
+          function rgb2hsv(r: number, g: number, b: number): [number, number, number] {
+            let computedH = 0;
+            let computedS = 0;
+            let computedV = 0;
+
+            r = r / 255;
+            g = g / 255;
+            b = b / 255;
+
+            const minRGB = Math.min(r, Math.min(g, b));
+            const maxRGB = Math.max(r, Math.max(g, b));
+
+            // Black-gray-white
+            if (minRGB === maxRGB) {
+              computedV = minRGB;
+              return [0, 0, computedV];
+            }
+
+            // Colors other than black-gray-white:
+            const d = (r === minRGB) ? g - b : ((b === minRGB) ? r - g : b - r);
+            const h = (r === minRGB) ? 3 : ((b === minRGB) ? 1 : 5);
+
+            computedH = 60 * (h - d / (maxRGB - minRGB));
+            computedS = (maxRGB - minRGB) / maxRGB;
+            computedV = maxRGB;
+
+            return [computedH, computedS, computedV];
+          }
 
           console.log('Worker has started its job!');
 
           const array = new Uint8ClampedArray(imageData.data);
 
-          const reds: IColor[] = [];
-          const greens: IColor[] = [];
-          const blues: IColor[] = [];
+          const colors: IColor[] = [];
 
-          // convert to arrays of color objects, sorted into buckets
+          // convert to array of color tuples
           for (let i = 0; i < array.length; i += 4) {
             const color: IColor = [array[i], array[i + 1], array[i + 2], array[i + 3]];
 
-            switch (Math.max(color[0], color[1], color[2])) {
-              case color[0]:
-                reds.push(color);
-                break;
-              case color[1]:
-                greens.push(color);
-                break;
-              case color[2]:
-                blues.push(color);
-                break;
-            }
-
-            // should trigger at every 10% completion
-            if (i % Math.floor(array.length / 10) === 0) {
-              console.log('Worker at: ' + (i / array.length * 100) + '%, iteration ' + i);
-            }
+            colors.push(color);
           }
 
-          const colors = [...reds, ...greens, ...blues];
+          colors.sort(sorter);
 
           // convert back to a Uint8Array
           for (let i = 0; i < colors.length; i++) {
