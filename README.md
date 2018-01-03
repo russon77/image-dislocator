@@ -1,4 +1,18 @@
-# ImagePixelDislocator
+# Image Pixel Dislocator
+
+![main](screenshots/base.png?raw=true)
+
+---
+
+![search](screenshots/dislocated.png?raw=true)
+
+## Motivation
+
+To make use of web workers for some computationally intensive application - in this case, performing operations over an image's pixels.
+
+Images are transformed by sorting the pixels using the Step Sort [described here](https://www.alanzucconi.com/2015/09/30/colour-sorting/).
+
+## Angular CLI
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.0.
 
@@ -25,3 +39,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## License
+
+MIT
