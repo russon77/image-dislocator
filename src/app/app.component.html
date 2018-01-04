@@ -8,7 +8,7 @@
     </p>
 
     <a mat-button
-       href="https://github.com/russon77">
+       href="https://github.com/russon77/image-dislocator">
       <img src="assets/img/github-circle-white-transparent.svg">
       <span class="my-github">GitHub</span>
     </a>
@@ -21,6 +21,19 @@
     <div fxFlex
          fxLayout="column"
          fxLayoutAlign="center center">
+      <section class="mat-typography"
+               *ngIf="!baseImage">
+        <h1>
+          To get started, select an image.
+        </h1>
+        <p>
+          <mat-icon>arrow_downward</mat-icon>
+          <br>
+          <mat-icon>arrow_downward</mat-icon>
+          <br>
+          <mat-icon>arrow_downward</mat-icon>
+        </p>
+      </section>
       <canvas #myCanvas
               class="content-main-image"></canvas>
     </div>
