@@ -11,3 +11,13 @@ canvas {
 mat-progress-bar {
   margin-right: 0.5rem;
 }
+
+@media screen and (max-width: 500px) {
+  .mat-caption {
+    display: none;
+  }
+
+  .my-github {
+    display: none;
+  }
+}
