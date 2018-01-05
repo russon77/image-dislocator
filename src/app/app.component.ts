@@ -22,7 +22,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   private canvas: HTMLCanvasElement = null;
   private context: CanvasRenderingContext2D = null;
 
-  private baseImage: ImageData = null;
+  public baseImage: ImageData = null;
   private changedImage: ImageData = null;
 
   private offscreenCanvas: HTMLCanvasElement = null;
